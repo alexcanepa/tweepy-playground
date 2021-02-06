@@ -1,3 +1,4 @@
+from tqdm import tqdm
 import json
 import os
 import tweepy
@@ -10,7 +11,7 @@ with open(keypath, "r") as jsonfile:
 # Authenticate user session
 auth = tweepy.OAuthHandler(api_data["consumer"]["key"], api_data["consumer"]["secret"])
 auth.set_access_token(api_data["access"]["token"], api_data["access"]["secret"])
-api = tweepy.API(auth, timeout=5) # impatient
+api = tweepy.API(auth, timeout=5)  # impatient
 print("User @{} Authenticated...\n".format(api.me().screen_name))
 
 
@@ -35,11 +36,10 @@ def wipe_tweet_history():
     # Require user input to continue
     if "yes" in confirmation.lower():
         print("Purging your history...")
-        for tweet in tweepy.Cursor(api.user_timeline).items():
+        for tweet in tqdm(
+            tweepy.Cursor(api.user_timeline).items(), total=api.me().statuses_count
+        ):
             api.destroy_status(tweet.id_str)
-            print(
-                "deleted tweet {} posted on {}".format(tweet.id_str, tweet.created_at)
-            )
     else:
         print("exiting...")
 
