@@ -1,3 +1,9 @@
+"""
+This script will delete all of the authenticated user's tweets.
+It expects API key information to be present at ./api-store.json,
+but you may also manually enter that info below in the authentication section.
+Register your keys on https://developer.twitter.com/en/apply-for-access first.
+"""
 from tqdm import tqdm
 import json
 import os
